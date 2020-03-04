@@ -19,5 +19,21 @@ export interface AxiosRequestConfig {
   url: string
   method?: METHOD
   data?: any
-  params?: any
+  params?: any,
+  headers?: any,
+  responseType?: XMLHttpRequestResponseType
+}
+
+// 响应对象
+export interface AxiosResponseConfig {
+  data: any,
+  status: number,
+  statusText: string,
+  headers: any,
+  config: AxiosRequestConfig,
+  // xhr对象
+  request: any
+}
+
+export interface AxiosPromise extends Promise<AxiosResponseConfig>{
 }
