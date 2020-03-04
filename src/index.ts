@@ -28,7 +28,6 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 function axios(config: AxiosRequestConfig): AxiosPromise {
-  
   processConfig(config)
   return xhr(config)
 }
