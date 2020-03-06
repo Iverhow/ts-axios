@@ -1,7 +1,7 @@
-import { AxiosPromise, AxiosRequestConfig } from './types'
+import { AxiosPromise, AxiosRequestConfig, AxiosResponseConfig } from './types'
 import { xhr } from './xhr'
 import { buildURL } from './helpers/url'
-import { transformRequest } from './helpers/data'
+import { transformRequest, transformResponse } from './helpers/data'
 import { processHeaders } from './helpers/header'
 
 function transformURL(config: AxiosRequestConfig): string {
@@ -27,9 +27,15 @@ function processConfig(config: AxiosRequestConfig): void {
   config.data = transformData(config)
 }
 
+function transformResponseData(resp: AxiosResponseConfig): AxiosResponseConfig {
+  resp.data = transformResponse(resp.data)
+  return resp
+}
+
 function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  return xhr(config)
+  // 在执行xhr后的then方法中能拿到response，试图将它的data转为json对象
+  return xhr(config).then((resp) => transformResponseData(resp))
 }
 
 export default axios
