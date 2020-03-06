@@ -1,5 +1,6 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponseConfig } from './types'
 import { parseHeaders } from './helpers/header'
+import { createError } from './helpers/error'
 
 // xhr的返回类型从void 变成AxiosPromise，因为有实际的返回类型
 // 有可能请求中发生异常，因此添加reject
@@ -51,11 +52,11 @@ export function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     // 出错时调用reject
     request.onerror = function handleError() {
-      reject(new Error('Network error'))
+      reject(createError('Network error', config, null, request))
     }
     // 处理超时逻辑
     request.ontimeout = function handleTimeout() {
-      reject(new Error(`Timeout of ${timeout} exceeded`))
+      reject(createError(`Timeout of ${timeout} exceeded`, config, 'ECONNABORTED', request))
     }
     // open方法之后设置headers
     Object.keys(headers).forEach((name) => {
@@ -74,7 +75,7 @@ export function xhr(config: AxiosRequestConfig): AxiosPromise {
         // 状态码为2xx，仍然是成功的
         resolve(response)
       } else {
-        reject(new Error(`Request failed with the status code ${response.status}`))
+        reject(createError(`Request failed with the status code ${response.status}`, config, null, request, response))
       }
     }
   })
