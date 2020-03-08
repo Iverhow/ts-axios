@@ -39,6 +39,7 @@ export interface AxiosResponseConfig {
 export interface AxiosPromise extends Promise<AxiosResponseConfig>{
 }
 
+// 导出给外面用
 export interface AxiosError extends Error {
   isAxiosError: boolean,
   config: AxiosRequestConfig,
