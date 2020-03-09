@@ -36,10 +36,10 @@ export interface AxiosResponseConfig {
   request: any
 }
 
-export interface AxiosPromise extends Promise<AxiosResponseConfig>{
+export interface AxiosPromise extends Promise<AxiosResponseConfig> {
 }
 
-// 导出给外面用
+// 这里的接口是为了导出给外面用
 export interface AxiosError extends Error {
   isAxiosError: boolean,
   config: AxiosRequestConfig,
@@ -47,3 +47,29 @@ export interface AxiosError extends Error {
   request?: any,
   response?: AxiosResponseConfig
 }
+
+// 便于外部调用，提供接口
+export interface Axios {
+  request(config: AxiosRequestConfig): AxiosPromise
+
+  get(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  delete(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  head(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  options(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
+
+  put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
+
+  patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
+
+}
+
+export interface AxiosInstance extends Axios {
+  (config: AxiosRequestConfig): AxiosResponseConfig
+
+}
+
